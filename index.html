@@ -3,156 +3,386 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tanya Trofimuk</title>
+  <title>I'm Tanya</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@900&family=Inter:wght@400&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Gasoek+One&display=swap');
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
 
     body {
-      min-height: 100dvh;
+      height: 100dvh;
       background: #fff;
-      color: #000;
-      font-family: 'Arial Black', 'Helvetica Neue', Arial, sans-serif;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
       overflow: hidden;
       user-select: none;
+      -webkit-user-select: none;
     }
 
-    /* ── Name top ── */
-    .name-top,
-    .name-bottom {
-      font-size: clamp(72px, 16vw, 180px);
-      font-weight: 900;
-      letter-spacing: -.03em;
-      line-height: .88;
-      text-transform: uppercase;
+    /* ── Big titles — bleed off edges ── */
+    .big-text {
+      font-family: 'Gasoek One', sans-serif;
+      font-size: 26vw;          /* uncapped — always bleeds */
+      line-height: 0.84;
       color: #000;
+      text-align: center;
+      white-space: nowrap;
+      pointer-events: none;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── Links ── */
+    .links-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .links-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .lnk {
+      position: relative;
+      display: inline-block;
+      margin-bottom: -6px;
+    }
+    .lnk:last-child { margin-bottom: 0; }
+
+    /* z-order: top item on top */
+    .lnk:nth-child(1) { z-index: 6; }
+    .lnk:nth-child(2) { z-index: 5; }
+    .lnk:nth-child(3) { z-index: 4; }
+    .lnk:nth-child(4) { z-index: 3; }
+    .lnk:nth-child(5) { z-index: 2; }
+    .lnk:nth-child(6) { z-index: 1; }
+
+    /* Pill */
+    .lnk a {
+      display: block;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: clamp(22px, 4.2vw, 50px);   /* ALL links same size */
+      letter-spacing: -0.025em;
+      line-height: 1;
+      padding: .13em .4em .17em;
+      border-radius: .24em;
+      white-space: nowrap;
+      position: relative;
+      transform-origin: center;
+      transition: transform .18s cubic-bezier(.34, 1.56, .64, 1);
+      box-shadow:
+        0 0 0 2.5px rgba(0,0,0,0.13),
+        3px 5px 0 rgba(0,0,0,0.18);
+    }
+
+    .lnk[data-id="strava"]    a { background: #F5620F; color: #000; }
+    .lnk[data-id="tg"]        a { background: #3EC6F5; color: #000; }
+    .lnk[data-id="threads"]   a { background: #1C1C1C; color: #fff; }
+    .lnk[data-id="insta"]     a { background: #FF1F6D; color: #000; }
+    .lnk[data-id="contact"]   a { background: #6DC86E; color: #000; }
+    .lnk[data-id="portfolio"] a {
+      font-size: clamp(18px, 3.4vw, 42px);
+      background: #C4A6F0; color: #000;
+      opacity: .45; pointer-events: none; cursor: default;
+    }
+
+    /* "not today" badge */
+    .badge {
+      position: absolute;
+      bottom: -11px;
+      left: 54%;
+      transform: translateX(-50%) rotate(-3deg);
+      background: #EDF24A;
+      color: #000;
+      font-size: clamp(9px, 1.1vw, 12px);
+      font-weight: 800;
+      padding: 3px 12px 4px;
+      border-radius: 20px;
+      white-space: nowrap;
+      z-index: 20;
+      box-shadow: 2px 2px 0 rgba(0,0,0,0.18);
       pointer-events: none;
     }
 
-    /* ── Links stack ── */
-    .links {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: -4px;
-      margin: clamp(8px, 2vw, 20px) 0;
-      position: relative;
+    @keyframes badge-fall {
+      0%   { transform: translateX(-50%) rotate(-3deg)  translateY(0);     opacity: 1; }
+      20%  { transform: translateX(-35%) rotate(14deg)  translateY(8px);   }
+      55%  { transform: translateX(0%)   rotate(38deg)  translateY(55px);  opacity: .9; }
+      100% { transform: translateX(25%)  rotate(68deg)  translateY(130px); opacity: 0; }
     }
 
-    .link-item {
-      display: block;
-      text-decoration: none;
-      font-size: clamp(28px, 5.5vw, 64px);
-      font-weight: 900;
-      letter-spacing: -.02em;
-      line-height: 1;
-      text-transform: lowercase;
-      padding: 2px 12px;
-      border-radius: 8px;
-      transform-origin: center center;
-      transition: transform .2s cubic-bezier(.34,1.56,.64,1),
-                  font-size .2s cubic-bezier(.34,1.56,.64,1);
-      cursor: pointer;
-      position: relative;
-      z-index: 1;
-      white-space: nowrap;
+    @keyframes badge-return {
+      0%   { transform: translateX(25%)  rotate(68deg)  translateY(130px); opacity: 0; }
+      55%  { transform: translateX(-56%) rotate(-6deg)  translateY(-14px); opacity: 1; }
+      78%  { transform: translateX(-48%) rotate(-1deg)  translateY(5px);   }
+      100% { transform: translateX(-50%) rotate(-3deg)  translateY(0);     opacity: 1; }
     }
 
-    .link-item:hover { z-index: 10; }
-
-    /* Colours — matching reference vibe */
-    .link-item:nth-child(1) { color: #fc5200; }                  /* strava orange */
-    .link-item:nth-child(2) { color: #29b6f6; }                  /* tg blue */
-    .link-item:nth-child(3) { color: #000; }                     /* threads black */
-    .link-item:nth-child(4) { color: #e1306c; }                  /* instagram pink */
-    .link-item:nth-child(5) { color: #7c3aed; }                  /* contact purple */
-    .link-item:nth-child(6) { color: #16a34a; }                  /* portfolio green */
-
-    /* Background pill on each word (like reference sticker look) */
-    .link-item::before {
-      content: '';
-      position: absolute;
+    /* ── Hover layer ── */
+    #hover-layer {
+      position: fixed;
       inset: 0;
-      border-radius: 10px;
-      background: currentColor;
-      opacity: .12;
-      transform: scaleX(.97);
-      transition: opacity .2s, transform .2s;
+      pointer-events: none;
+      z-index: 300;
     }
-    .link-item:hover::before {
-      opacity: .18;
-      transform: scaleX(1);
+
+    .floater {
+      position: absolute;
+      pointer-events: none;
+      opacity: 0;
+      transform: scale(0.55) translateY(8px);
+      transition:
+        opacity   .22s ease,
+        transform .3s cubic-bezier(.34, 1.56, .64, 1);
+    }
+    .floater.on { opacity: 1; transform: scale(1) translateY(0); }
+    .floater:nth-child(2) { transition-delay: .07s; }
+
+    /* Big emoji */
+    .f-emoji {
+      font-size: clamp(48px, 6.5vw, 76px);
+      filter: drop-shadow(3px 4px 6px rgba(0,0,0,0.16));
+      line-height: 1;
+    }
+
+    /* Post card */
+    .f-post {
+      background: #111;
+      color: #fff;
+      border-radius: 14px;
+      padding: 11px 14px 13px;
+      width: clamp(145px, 17vw, 200px);
+      box-shadow: 4px 6px 18px rgba(0,0,0,0.26);
+    }
+    .f-post .p-meta  { font-size: clamp(9px, .85vw, 11px); opacity: .52; margin-bottom: 5px; }
+    .f-post .p-text  { font-size: clamp(10px, 1.05vw, 13px); line-height: 1.42; }
+    .f-post .p-stats { margin-top: 8px; font-size: clamp(9px, .85vw, 11px); opacity: .42; display: flex; gap: 12px; }
+
+    @media (max-width: 600px) {
+      .lnk { margin-bottom: -4px; }
+      .badge { font-size: 9px; padding: 2px 9px 3px; bottom: -9px; }
     }
   </style>
 </head>
 <body>
 
-  <div class="name-top">Tanya</div>
+  <div class="big-text">HELLO</div>
 
-  <nav class="links" id="links">
-    <a href="https://www.strava.com/athletes/YOUR_ID"   target="_blank" rel="noopener" class="link-item">strava</a>
-    <a href="https://t.me/YOUR_CHANNEL"                 target="_blank" rel="noopener" class="link-item">tg channel</a>
-    <a href="https://www.threads.net/@YOUR_HANDLE"      target="_blank" rel="noopener" class="link-item">threads</a>
-    <a href="https://www.instagram.com/YOUR_HANDLE"     target="_blank" rel="noopener" class="link-item">instagram</a>
-    <a href="mailto:YOUR@EMAIL.COM"                                      class="link-item">contact me</a>
-    <a href="#"                                                          class="link-item" style="opacity:.4;pointer-events:none;">portfolio</a>
-  </nav>
+  <div class="links-wrap">
+    <nav class="links-stack" id="stack">
 
-  <div class="name-bottom">Trofimuk</div>
+      <div class="lnk" data-id="strava">
+        <a href="https://www.strava.com/athletes/94319734" target="_blank" rel="noopener">strava</a>
+      </div>
+
+      <div class="lnk" data-id="tg">
+        <a href="https://t.me/perfectootanyaa" target="_blank" rel="noopener">tg-channel</a>
+      </div>
+
+      <div class="lnk" data-id="threads">
+        <a href="https://www.threads.net/@perfectootanya" target="_blank" rel="noopener">threads</a>
+      </div>
+
+      <div class="lnk" data-id="insta">
+        <a href="https://www.instagram.com/perfectootanya" target="_blank" rel="noopener">instagram</a>
+      </div>
+
+      <div class="lnk" data-id="contact">
+        <a href="https://t.me/trofimukta" target="_blank" rel="noopener">contact me</a>
+      </div>
+
+      <div class="lnk" data-id="portfolio">
+        <a href="#" tabindex="-1">portfolio</a>
+        <div class="badge" id="badge">not today</div>
+      </div>
+
+    </nav>
+  </div>
+
+  <div class="big-text">I'M TANYA</div>
+
+  <div id="hover-layer"></div>
 
   <script>
-    // macOS dock magnification effect
-    const links = document.getElementById('links');
-    const items = Array.from(links.querySelectorAll('.link-item'));
+  (() => {
+    // ── Hover content ──────────────────────────────────────────
+    const DATA = {
+      strava: {
+        emoji: '🚴‍♀️',
+        post:  { meta: 'strava · today', text: 'morning ride\n28 km · 1:04:12 · ↑ 180m', stats: ['♡ 14', '↩ 2'] }
+      },
+      tg: {
+        emoji: '📢',
+        post:  { meta: 't.me/perfectootanyaa · just now', text: 'новый пост в канале 🔥', stats: ['👁 812', '↩ 33'] }
+      },
+      threads: {
+        emoji: '✍️',
+        post:  { meta: 'perfectootanya · 20.05.2026', text: 'мечта №54: подружка — HR, которая тебя трудоустроит', stats: ['♡ 812', '↩ 33'] }
+      },
+      insta: {
+        emoji: '🌸',
+        post:  { meta: '@perfectootanya', text: 'latest drop 🤍', stats: ['♡ 1,204', '💬 57'] }
+      },
+      contact: {
+        emoji: '💌',
+        post:  { meta: 'new message', text: 'hey tanya! love your work and would love to connect...', stats: null }
+      }
+    };
 
-    const BASE   = 1;       // normal scale
-    const PEAK   = 1.55;    // hovered item scale
-    const NEAR1  = 1.25;    // direct neighbours
-    const NEAR2  = 1.1;     // two away
+    // ── Floater helpers ────────────────────────────────────────
+    const layer = document.getElementById('hover-layer');
+    let active = [];
+    let hideTimer = null;
 
-    function getScale(dist) {
-      if (dist === 0) return PEAK;
-      if (dist === 1) return NEAR1;
-      if (dist === 2) return NEAR2;
-      return BASE;
+    function clearFloaters(instant) {
+      clearTimeout(hideTimer);
+      active.forEach(f => {
+        f.classList.remove('on');
+        if (instant) { f.remove(); }
+        else { f.addEventListener('transitionend', () => f.remove(), { once: true }); }
+      });
+      active = [];
     }
 
-    items.forEach((item, i) => {
+    function buildEmoji(e) {
+      return `<div class="f-emoji">${e}</div>`;
+    }
+    function buildPost({ meta, text, stats }) {
+      const s = stats
+        ? `<div class="p-stats">${stats.map(x => `<span>${x}</span>`).join('')}</div>`
+        : '';
+      return `<div class="f-post">
+        <div class="p-meta">${meta}</div>
+        <div class="p-text">${text.replace(/\n/g, '<br>')}</div>
+        ${s}
+      </div>`;
+    }
+
+    function spawnFloaters(item) {
+      const id   = item.dataset.id;
+      const data = DATA[id];
+      if (!data) return;
+      clearFloaters(true);
+
+      const rect = item.querySelector('a').getBoundingClientRect();
+      const cy   = rect.top + rect.height / 2;
+      const mob  = window.innerWidth < 600;
+
+      // Emoji LEFT of pill, post card RIGHT of pill
+      // Each element position = top-left corner
+      const emojiSize = mob ? 52 : 76;   // approx rendered width
+      const postW     = mob ? 145 : 200;
+
+      let positions, contents;
+
+      if (mob) {
+        // On mobile: emoji above-left, post below-right
+        positions = [
+          { x: rect.left,              y: rect.top - emojiSize - 12 },
+          { x: rect.right - postW,     y: rect.bottom + 12 }
+        ];
+      } else {
+        positions = [
+          { x: rect.left - emojiSize - 16, y: cy - emojiSize / 2 },      // emoji: left
+          { x: rect.right + 16,            y: cy - 65 }                   // post: right
+        ];
+      }
+
+      contents = [buildEmoji(data.emoji), buildPost(data.post)];
+
+      positions.forEach(({ x, y }, i) => {
+        const f = document.createElement('div');
+        f.className = 'floater';
+        f.innerHTML = contents[i];
+        // clamp to viewport
+        const maxX = i === 0 ? window.innerWidth - emojiSize - 4 : window.innerWidth - postW - 4;
+        f.style.left = Math.max(4, Math.min(maxX, x)) + 'px';
+        f.style.top  = Math.max(4, Math.min(window.innerHeight - 120, y)) + 'px';
+        layer.appendChild(f);
+        active.push(f);
+        requestAnimationFrame(() => requestAnimationFrame(() => f.classList.add('on')));
+      });
+    }
+
+    // ── macOS dock scale ───────────────────────────────────────
+    const allLnks = Array.from(document.querySelectorAll('.lnk'));
+
+    function dockScale(d) { return [1.55, 1.22, 1.07][d] ?? 1; }
+
+    allLnks.forEach((item, i) => {
       item.addEventListener('mouseenter', () => {
-        items.forEach((el, j) => {
-          const dist = Math.abs(i - j);
-          const scale = getScale(dist);
-          el.style.transform = `scale(${scale})`;
-          el.style.zIndex = dist === 0 ? 10 : Math.max(1, 5 - dist);
+        allLnks.forEach((el, j) => {
+          el.querySelector('a').style.transform = `scale(${dockScale(Math.abs(i - j))})`;
+          el.style.zIndex = j === i ? 50 : 6 - j;
         });
       });
     });
 
-    links.addEventListener('mouseleave', () => {
-      items.forEach(el => {
-        el.style.transform = 'scale(1)';
-        el.style.zIndex = 1;
+    document.getElementById('stack').addEventListener('mouseleave', () => {
+      allLnks.forEach((el, j) => {
+        el.querySelector('a').style.transform = '';
+        el.style.zIndex = 6 - j;
       });
     });
 
-    // Touch support — tap briefly magnifies
-    items.forEach((item, i) => {
+    // ── Hover floaters (non-portfolio links) ───────────────────
+    document.querySelectorAll('.lnk:not([data-id="portfolio"])').forEach(item => {
+      item.addEventListener('mouseenter', () => spawnFloaters(item));
+      item.addEventListener('mouseleave', () => clearFloaters());
       item.addEventListener('touchstart', () => {
-        items.forEach((el, j) => {
-          el.style.transform = `scale(${getScale(Math.abs(i - j))})`;
-        });
+        spawnFloaters(item);
+        hideTimer = setTimeout(() => clearFloaters(), 1400);
       }, { passive: true });
-      item.addEventListener('touchend', () => {
-        setTimeout(() => {
-          items.forEach(el => el.style.transform = 'scale(1)');
-        }, 400);
-      });
     });
+
+    // ── Portfolio badge: fall → return loop ───────────────────
+    const badge    = document.getElementById('badge');
+    const portLnk  = document.querySelector('[data-id="portfolio"]');
+    let   fallen   = false;
+    let   returnTm = null;
+
+    function dropBadge() {
+      if (fallen) return;
+      fallen = true;
+      clearTimeout(returnTm);
+
+      // Play fall animation
+      badge.style.animation = 'none';
+      badge.offsetHeight; // reflow
+      badge.style.animation = 'badge-fall .85s cubic-bezier(.55,0,.75,.45) forwards';
+
+      returnTm = setTimeout(() => {
+        // Snap to fallen position (invisible)
+        badge.style.animation = 'none';
+        badge.style.transform = 'translateX(25%) rotate(68deg) translateY(130px)';
+        badge.style.opacity   = '0';
+        badge.offsetHeight;
+
+        // After pause, fly back
+        setTimeout(() => {
+          fallen = false;
+          badge.style.animation = 'badge-return .65s cubic-bezier(.34,1.56,.64,1) forwards';
+          badge.addEventListener('animationend', () => {
+            badge.style.animation = '';
+            badge.style.transform = '';
+            badge.style.opacity   = '';
+          }, { once: true });
+        }, 1600);
+
+      }, 870);
+    }
+
+    portLnk.addEventListener('mouseenter', dropBadge);
+    portLnk.addEventListener('touchstart', dropBadge, { passive: true });
+  })();
   </script>
 </body>
 </html>

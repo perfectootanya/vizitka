@@ -23,24 +23,26 @@
       -webkit-user-select: none;
     }
 
-    /* ── Big titles — bleed off edges ── */
+    /* ── Big titles (desktop) ── */
     .big-text {
       font-family: 'Gasoek One', sans-serif;
-      font-size: 26vw;          /* uncapped — always bleeds */
+      font-size: min(26vw, 18vh);   /* fits both titles on one screen */
       line-height: 0.84;
       color: #000;
       text-align: center;
-      white-space: nowrap;
+      white-space: nowrap;          /* single line, bleeds off sides */
       pointer-events: none;
       letter-spacing: -0.01em;
+      flex-shrink: 0;
     }
 
-    /* ── Links ── */
+    /* ── Links area ── */
     .links-wrap {
       flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 100%;
     }
 
     .links-stack {
@@ -56,7 +58,6 @@
     }
     .lnk:last-child { margin-bottom: 0; }
 
-    /* z-order: top item on top */
     .lnk:nth-child(1) { z-index: 6; }
     .lnk:nth-child(2) { z-index: 5; }
     .lnk:nth-child(3) { z-index: 4; }
@@ -64,12 +65,11 @@
     .lnk:nth-child(5) { z-index: 2; }
     .lnk:nth-child(6) { z-index: 1; }
 
-    /* Pill */
     .lnk a {
       display: block;
       text-decoration: none;
       font-weight: 800;
-      font-size: clamp(22px, 4.2vw, 50px);   /* ALL links same size */
+      font-size: clamp(22px, 4.2vw, 50px);
       letter-spacing: -0.025em;
       line-height: 1;
       padding: .13em .4em .17em;
@@ -118,7 +118,6 @@
       55%  { transform: translateX(0%)   rotate(38deg)  translateY(55px);  opacity: .9; }
       100% { transform: translateX(25%)  rotate(68deg)  translateY(130px); opacity: 0; }
     }
-
     @keyframes badge-return {
       0%   { transform: translateX(25%)  rotate(68deg)  translateY(130px); opacity: 0; }
       55%  { transform: translateX(-56%) rotate(-6deg)  translateY(-14px); opacity: 1; }
@@ -126,49 +125,91 @@
       100% { transform: translateX(-50%) rotate(-3deg)  translateY(0);     opacity: 1; }
     }
 
-    /* ── Hover layer ── */
+    /* ── Desktop hover layer ── */
     #hover-layer {
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: 300;
     }
-
     .floater {
       position: absolute;
       pointer-events: none;
       opacity: 0;
       transform: scale(0.55) translateY(8px);
-      transition:
-        opacity   .22s ease,
-        transform .3s cubic-bezier(.34, 1.56, .64, 1);
+      transition: opacity .22s ease, transform .3s cubic-bezier(.34, 1.56, .64, 1);
     }
     .floater.on { opacity: 1; transform: scale(1) translateY(0); }
     .floater:nth-child(2) { transition-delay: .07s; }
 
-    /* Big emoji */
     .f-emoji {
       font-size: clamp(48px, 6.5vw, 76px);
       filter: drop-shadow(3px 4px 6px rgba(0,0,0,0.16));
       line-height: 1;
     }
-
-    /* Post card */
     .f-post {
-      background: #111;
-      color: #fff;
-      border-radius: 14px;
-      padding: 11px 14px 13px;
+      background: #111; color: #fff;
+      border-radius: 14px; padding: 11px 14px 13px;
       width: clamp(145px, 17vw, 200px);
       box-shadow: 4px 6px 18px rgba(0,0,0,0.26);
     }
-    .f-post .p-meta  { font-size: clamp(9px, .85vw, 11px); opacity: .52; margin-bottom: 5px; }
-    .f-post .p-text  { font-size: clamp(10px, 1.05vw, 13px); line-height: 1.42; }
-    .f-post .p-stats { margin-top: 8px; font-size: clamp(9px, .85vw, 11px); opacity: .42; display: flex; gap: 12px; }
+    .f-post .p-meta  { font-size: 11px; opacity: .52; margin-bottom: 5px; }
+    .f-post .p-text  { font-size: 13px; line-height: 1.42; }
+    .f-post .p-stats { margin-top: 8px; font-size: 11px; opacity: .42; display: flex; gap: 12px; }
 
-    @media (max-width: 600px) {
-      .lnk { margin-bottom: -4px; }
-      .badge { font-size: 9px; padding: 2px 9px 3px; bottom: -9px; }
+    /* ══ MOBILE ═══════════════════════════════════════════════════ */
+    @media (max-width: 700px) {
+
+      /* Big text: large, wrap allowed so "I'M TANYA" breaks to two lines */
+      .big-text {
+        font-size: 26vw;
+        white-space: normal;
+        line-height: 0.88;
+      }
+
+      /* Links: big tap targets, positive gap, no overlap */
+      .lnk {
+        margin-bottom: 7px;
+      }
+      .lnk:last-child { margin-bottom: 0; }
+
+      /* Reset desktop z-stacking */
+      .lnk:nth-child(1),
+      .lnk:nth-child(2),
+      .lnk:nth-child(3),
+      .lnk:nth-child(4),
+      .lnk:nth-child(5),
+      .lnk:nth-child(6) { z-index: 1; }
+
+      .lnk a {
+        font-size: clamp(26px, 9vw, 42px);
+        padding: .16em .5em .22em;
+        transition: none;    /* no hover transition on touch */
+      }
+
+      .lnk[data-id="portfolio"] a {
+        font-size: clamp(22px, 7.5vw, 34px);
+      }
+
+      .badge {
+        font-size: 10px;
+        padding: 3px 10px 4px;
+        bottom: -10px;
+      }
+
+      /* Gentle sway — applied to .lnk so badge moves with the pill */
+      @keyframes sway {
+        0%, 100% { transform: translateX(0)   rotate(0deg); }
+        33%       { transform: translateX(4px)  rotate(.3deg); }
+        66%       { transform: translateX(-4px) rotate(-.3deg); }
+      }
+
+      .lnk[data-id="strava"]    { animation: sway 3.2s ease-in-out infinite 0s;    }
+      .lnk[data-id="tg"]        { animation: sway 2.9s ease-in-out infinite -.7s;  }
+      .lnk[data-id="threads"]   { animation: sway 3.5s ease-in-out infinite -1.4s; }
+      .lnk[data-id="insta"]     { animation: sway 3.1s ease-in-out infinite -2.0s; }
+      .lnk[data-id="contact"]   { animation: sway 2.8s ease-in-out infinite -.3s;  }
+      .lnk[data-id="portfolio"] { animation: sway 3.4s ease-in-out infinite -1.8s; }
     }
   </style>
 </head>
@@ -182,23 +223,18 @@
       <div class="lnk" data-id="strava">
         <a href="https://www.strava.com/athletes/94319734" target="_blank" rel="noopener">strava</a>
       </div>
-
       <div class="lnk" data-id="tg">
         <a href="https://t.me/perfectootanyaa" target="_blank" rel="noopener">tg-channel</a>
       </div>
-
       <div class="lnk" data-id="threads">
         <a href="https://www.threads.net/@perfectootanya" target="_blank" rel="noopener">threads</a>
       </div>
-
       <div class="lnk" data-id="insta">
         <a href="https://www.instagram.com/perfectootanya" target="_blank" rel="noopener">instagram</a>
       </div>
-
       <div class="lnk" data-id="contact">
         <a href="https://t.me/trofimukta" target="_blank" rel="noopener">contact me</a>
       </div>
-
       <div class="lnk" data-id="portfolio">
         <a href="#" tabindex="-1">portfolio</a>
         <div class="badge" id="badge">not today</div>
@@ -213,57 +249,79 @@
 
   <script>
   (() => {
-    // ── Hover content ──────────────────────────────────────────
+    const isMobile = window.matchMedia('(max-width: 700px)').matches
+                  || window.matchMedia('(hover: none)').matches;
+
+    // ── Badge fall → return (works on both desktop + mobile) ──
+    const badge    = document.getElementById('badge');
+    const portLnk  = document.querySelector('[data-id="portfolio"]');
+    let   fallen   = false;
+    let   returnTm = null;
+
+    function dropBadge() {
+      if (fallen) return;
+      fallen = true;
+      clearTimeout(returnTm);
+      badge.style.animation = 'none';
+      badge.offsetHeight;
+      badge.style.animation = 'badge-fall .85s cubic-bezier(.55,0,.75,.45) forwards';
+      returnTm = setTimeout(() => {
+        badge.style.animation = 'none';
+        badge.style.transform = 'translateX(25%) rotate(68deg) translateY(130px)';
+        badge.style.opacity   = '0';
+        badge.offsetHeight;
+        setTimeout(() => {
+          fallen = false;
+          badge.style.animation = 'badge-return .65s cubic-bezier(.34,1.56,.64,1) forwards';
+          badge.addEventListener('animationend', () => {
+            badge.style.animation = '';
+            badge.style.transform = '';
+            badge.style.opacity   = '';
+          }, { once: true });
+        }, 1600);
+      }, 870);
+    }
+
+    portLnk.addEventListener('mouseenter', dropBadge);
+    portLnk.addEventListener('touchstart', dropBadge, { passive: true });
+
+    // Mobile: sway is CSS-only, taps navigate via href — nothing else needed
+    if (isMobile) return;
+
+    // ── DESKTOP: dock scale + hover floaters ──────────────────
     const DATA = {
-      strava: {
+      strava:  {
         emoji: '🚴‍♀️',
-        post:  { meta: 'strava · today', text: 'morning ride\n28 km · 1:04:12 · ↑ 180m', stats: ['♡ 14', '↩ 2'] }
+        post: { meta: 'strava · today', text: 'morning ride\n28 km · 1:04:12 · ↑ 180m', stats: ['♡ 14', '↩ 2'] }
       },
       tg: {
         emoji: '📢',
-        post:  { meta: 't.me/perfectootanyaa · just now', text: 'новый пост в канале 🔥', stats: ['👁 812', '↩ 33'] }
+        post: { meta: 't.me/perfectootanyaa · just now', text: 'новый пост в канале 🔥', stats: ['👁 812', '↩ 33'] }
       },
       threads: {
         emoji: '✍️',
-        post:  { meta: 'perfectootanya · 20.05.2026', text: 'мечта №54: подружка — HR, которая тебя трудоустроит', stats: ['♡ 812', '↩ 33'] }
+        post: { meta: 'perfectootanya · 20.05.2026', text: 'мечта №54: подружка — HR, которая тебя трудоустроит', stats: ['♡ 812', '↩ 33'] }
       },
       insta: {
         emoji: '🌸',
-        post:  { meta: '@perfectootanya', text: 'latest drop 🤍', stats: ['♡ 1,204', '💬 57'] }
+        post: { meta: '@perfectootanya', text: 'latest drop 🤍', stats: ['♡ 1,204', '💬 57'] }
       },
       contact: {
         emoji: '💌',
-        post:  { meta: 'new message', text: 'hey tanya! love your work and would love to connect...', stats: null }
+        post: { meta: 'new message', text: 'hey tanya! love your work and would love to connect...', stats: null }
       }
     };
 
-    // ── Floater helpers ────────────────────────────────────────
-    const layer = document.getElementById('hover-layer');
-    let active = [];
-    let hideTimer = null;
+    const layer  = document.getElementById('hover-layer');
+    let   active = [];
 
     function clearFloaters(instant) {
-      clearTimeout(hideTimer);
       active.forEach(f => {
         f.classList.remove('on');
         if (instant) { f.remove(); }
         else { f.addEventListener('transitionend', () => f.remove(), { once: true }); }
       });
       active = [];
-    }
-
-    function buildEmoji(e) {
-      return `<div class="f-emoji">${e}</div>`;
-    }
-    function buildPost({ meta, text, stats }) {
-      const s = stats
-        ? `<div class="p-stats">${stats.map(x => `<span>${x}</span>`).join('')}</div>`
-        : '';
-      return `<div class="f-post">
-        <div class="p-meta">${meta}</div>
-        <div class="p-text">${text.replace(/\n/g, '<br>')}</div>
-        ${s}
-      </div>`;
     }
 
     function spawnFloaters(item) {
@@ -274,37 +332,25 @@
 
       const rect = item.querySelector('a').getBoundingClientRect();
       const cy   = rect.top + rect.height / 2;
-      const mob  = window.innerWidth < 600;
 
-      // Emoji LEFT of pill, post card RIGHT of pill
-      // Each element position = top-left corner
-      const emojiSize = mob ? 52 : 76;   // approx rendered width
-      const postW     = mob ? 145 : 200;
+      const places = [
+        { x: rect.left - 96,  y: cy - 40 },   // emoji: left of pill
+        { x: rect.right + 16, y: cy - 65 }    // post: right of pill
+      ];
+      const contents = [
+        `<div class="f-emoji">${data.emoji}</div>`,
+        `<div class="f-post">
+          <div class="p-meta">${data.post.meta}</div>
+          <div class="p-text">${data.post.text.replace(/\n/g, '<br>')}</div>
+          ${data.post.stats ? `<div class="p-stats">${data.post.stats.map(s => `<span>${s}</span>`).join('')}</div>` : ''}
+        </div>`
+      ];
 
-      let positions, contents;
-
-      if (mob) {
-        // On mobile: emoji above-left, post below-right
-        positions = [
-          { x: rect.left,              y: rect.top - emojiSize - 12 },
-          { x: rect.right - postW,     y: rect.bottom + 12 }
-        ];
-      } else {
-        positions = [
-          { x: rect.left - emojiSize - 16, y: cy - emojiSize / 2 },      // emoji: left
-          { x: rect.right + 16,            y: cy - 65 }                   // post: right
-        ];
-      }
-
-      contents = [buildEmoji(data.emoji), buildPost(data.post)];
-
-      positions.forEach(({ x, y }, i) => {
+      places.forEach(({ x, y }, i) => {
         const f = document.createElement('div');
         f.className = 'floater';
         f.innerHTML = contents[i];
-        // clamp to viewport
-        const maxX = i === 0 ? window.innerWidth - emojiSize - 4 : window.innerWidth - postW - 4;
-        f.style.left = Math.max(4, Math.min(maxX, x)) + 'px';
+        f.style.left = Math.max(4, Math.min(window.innerWidth - (i ? 205 : 90), x)) + 'px';
         f.style.top  = Math.max(4, Math.min(window.innerHeight - 120, y)) + 'px';
         layer.appendChild(f);
         active.push(f);
@@ -312,10 +358,8 @@
       });
     }
 
-    // ── macOS dock scale ───────────────────────────────────────
-    const allLnks = Array.from(document.querySelectorAll('.lnk'));
-
-    function dockScale(d) { return [1.55, 1.22, 1.07][d] ?? 1; }
+    const allLnks  = Array.from(document.querySelectorAll('.lnk'));
+    const dockScale = d => [1.55, 1.22, 1.07][d] ?? 1;
 
     allLnks.forEach((item, i) => {
       item.addEventListener('mouseenter', () => {
@@ -333,55 +377,10 @@
       });
     });
 
-    // ── Hover floaters (non-portfolio links) ───────────────────
     document.querySelectorAll('.lnk:not([data-id="portfolio"])').forEach(item => {
       item.addEventListener('mouseenter', () => spawnFloaters(item));
       item.addEventListener('mouseleave', () => clearFloaters());
-      item.addEventListener('touchstart', () => {
-        spawnFloaters(item);
-        hideTimer = setTimeout(() => clearFloaters(), 1400);
-      }, { passive: true });
     });
-
-    // ── Portfolio badge: fall → return loop ───────────────────
-    const badge    = document.getElementById('badge');
-    const portLnk  = document.querySelector('[data-id="portfolio"]');
-    let   fallen   = false;
-    let   returnTm = null;
-
-    function dropBadge() {
-      if (fallen) return;
-      fallen = true;
-      clearTimeout(returnTm);
-
-      // Play fall animation
-      badge.style.animation = 'none';
-      badge.offsetHeight; // reflow
-      badge.style.animation = 'badge-fall .85s cubic-bezier(.55,0,.75,.45) forwards';
-
-      returnTm = setTimeout(() => {
-        // Snap to fallen position (invisible)
-        badge.style.animation = 'none';
-        badge.style.transform = 'translateX(25%) rotate(68deg) translateY(130px)';
-        badge.style.opacity   = '0';
-        badge.offsetHeight;
-
-        // After pause, fly back
-        setTimeout(() => {
-          fallen = false;
-          badge.style.animation = 'badge-return .65s cubic-bezier(.34,1.56,.64,1) forwards';
-          badge.addEventListener('animationend', () => {
-            badge.style.animation = '';
-            badge.style.transform = '';
-            badge.style.opacity   = '';
-          }, { once: true });
-        }, 1600);
-
-      }, 870);
-    }
-
-    portLnk.addEventListener('mouseenter', dropBadge);
-    portLnk.addEventListener('touchstart', dropBadge, { passive: true });
   })();
   </script>
 </body>

@@ -58,12 +58,13 @@
     }
     .lnk:last-child { margin-bottom: 0; }
 
-    .lnk:nth-child(1) { z-index: 6; }
-    .lnk:nth-child(2) { z-index: 5; }
-    .lnk:nth-child(3) { z-index: 4; }
-    .lnk:nth-child(4) { z-index: 3; }
-    .lnk:nth-child(5) { z-index: 2; }
-    .lnk:nth-child(6) { z-index: 1; }
+    .lnk:nth-child(1) { z-index: 7; }
+    .lnk:nth-child(2) { z-index: 6; }
+    .lnk:nth-child(3) { z-index: 5; }
+    .lnk:nth-child(4) { z-index: 4; }
+    .lnk:nth-child(5) { z-index: 3; }
+    .lnk:nth-child(6) { z-index: 2; }
+    .lnk:nth-child(7) { z-index: 1; }
 
     .lnk a {
       display: block;
@@ -88,9 +89,10 @@
 
     .lnk[data-id="strava"]    a { --stroke-color: #F5620F; }
     .lnk[data-id="tg"]        a { --stroke-color: #3EC6F5; }
+    .lnk[data-id="spotify"]   a { --stroke-color: #1DB954; }
     .lnk[data-id="threads"]   a { --stroke-color: #1C1C1C; color: #fff; }
     .lnk[data-id="insta"]     a { --stroke-color: #FF1F6D; }
-    .lnk[data-id="contact"]   a { --stroke-color: #6DC86E; }
+    .lnk[data-id="contact"]   a { --stroke-color: #F5E642; }
     .lnk[data-id="portfolio"] a {
       font-size: min(7.5vw, 9.5vh);
       --stroke-color: #C4A6F0;
@@ -170,9 +172,9 @@
         line-height: 0.88;
       }
 
-      /* Links: big tap targets, no overlap */
+      /* Links: big tap targets, positive gap, no overlap */
       .lnk {
-        margin-bottom: -0.08em;
+        margin-bottom: 7px;
       }
       .lnk:last-child { margin-bottom: 0; }
 
@@ -182,7 +184,12 @@
       .lnk:nth-child(3),
       .lnk:nth-child(4),
       .lnk:nth-child(5),
-      .lnk:nth-child(6) { z-index: 1; }
+      .lnk:nth-child(6),
+      .lnk:nth-child(7) { z-index: 1; }
+
+      .lnk {
+        margin-bottom: -2em;
+      }
 
       .lnk a {
         font-size: min(13vw, 9vh);
@@ -209,6 +216,7 @@
 
       .lnk[data-id="strava"]    { animation: sway 3.2s ease-in-out infinite 0s;    }
       .lnk[data-id="tg"]        { animation: sway 2.9s ease-in-out infinite -.7s;  }
+      .lnk[data-id="spotify"]   { animation: sway 3.3s ease-in-out infinite -1.1s; }
       .lnk[data-id="threads"]   { animation: sway 3.5s ease-in-out infinite -1.4s; }
       .lnk[data-id="insta"]     { animation: sway 3.1s ease-in-out infinite -2.0s; }
       .lnk[data-id="contact"]   { animation: sway 2.8s ease-in-out infinite -.3s;  }
@@ -228,6 +236,9 @@
       </div>
       <div class="lnk" data-id="tg">
         <a href="https://t.me/perfectootanyaa" target="_blank" rel="noopener">tg-channel</a>
+      </div>
+      <div class="lnk" data-id="spotify">
+        <a href="https://open.spotify.com/user/316mjm5sosnorehwiagpyl776pvq?si=d6fd7da98df04858" target="_blank" rel="noopener">spotify</a>
       </div>
       <div class="lnk" data-id="threads">
         <a href="https://www.threads.net/@perfectootanya" target="_blank" rel="noopener">threads</a>
@@ -300,6 +311,10 @@
       tg: {
         emoji: '📢',
         post: { meta: 't.me/perfectootanyaa · just now', text: 'новый пост в канале 🔥', stats: ['👁 812', '↩ 33'] }
+      },
+      spotify: {
+        emoji: '🪩',
+        post: { meta: 'spotify · now playing', text: 'Baby Come Back\nMusic video · Player', stats: ['♡', '▶ 2.1M'] }
       },
       threads: {
         emoji: '✍️',

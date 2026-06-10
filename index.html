@@ -4,6 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>I'm Tanya</title>
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+      (function(m,e,t,r,i,k,a){
+          m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+          m[i].l=1*new Date();
+          for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+          k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+      })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=109747080', 'ym');
+
+      ym(109747080, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/109747080" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Gasoek+One&display=swap');
 
@@ -54,7 +68,7 @@
     .lnk {
       position: relative;
       display: inline-block;
-      margin-bottom: -6px;
+      margin-bottom: -2em;
     }
     .lnk:last-child { margin-bottom: 0; }
 
@@ -69,28 +83,31 @@
       display: block;
       text-decoration: none;
       font-weight: 800;
-      font-size: clamp(22px, 4.2vw, 50px);
+      font-size: min(9vw, 11vh);
       letter-spacing: -0.025em;
       line-height: 1;
-      padding: .13em .4em .17em;
-      border-radius: .24em;
+      padding: .04em .18em .08em;
       white-space: nowrap;
       position: relative;
       transform-origin: center;
       transition: transform .18s cubic-bezier(.34, 1.56, .64, 1);
-      box-shadow:
-        0 0 0 2.5px rgba(0,0,0,0.13),
-        3px 5px 0 rgba(0,0,0,0.18);
+      background: transparent;
+      color: #000;
+      -webkit-text-stroke: 0.26em var(--stroke-color);
+      stroke-linejoin: round;
+      stroke-linecap: round;
+      paint-order: stroke fill;
+      filter: drop-shadow(0 -3px 4px rgba(0,0,0,0.25));
     }
 
-    .lnk[data-id="strava"]    a { background: #F5620F; color: #000; }
-    .lnk[data-id="tg"]        a { background: #3EC6F5; color: #000; }
-    .lnk[data-id="threads"]   a { background: #1C1C1C; color: #fff; }
-    .lnk[data-id="insta"]     a { background: #FF1F6D; color: #000; }
-    .lnk[data-id="contact"]   a { background: #6DC86E; color: #000; }
+    .lnk[data-id="strava"]    a { --stroke-color: #F5620F; }
+    .lnk[data-id="tg"]        a { --stroke-color: #3EC6F5; }
+    .lnk[data-id="threads"]   a { --stroke-color: #1C1C1C; color: #fff; }
+    .lnk[data-id="insta"]     a { --stroke-color: #FF1F6D; }
+    .lnk[data-id="contact"]   a { --stroke-color: #6DC86E; }
     .lnk[data-id="portfolio"] a {
-      font-size: clamp(18px, 3.4vw, 42px);
-      background: #C4A6F0; color: #000;
+      font-size: min(7.5vw, 9.5vh);
+      --stroke-color: #C4A6F0;
       opacity: .45; pointer-events: none; cursor: default;
     }
 
@@ -181,14 +198,18 @@
       .lnk:nth-child(5),
       .lnk:nth-child(6) { z-index: 1; }
 
+      .lnk {
+        margin-bottom: -2em;
+      }
+
       .lnk a {
-        font-size: clamp(26px, 9vw, 42px);
-        padding: .16em .5em .22em;
-        transition: none;    /* no hover transition on touch */
+        font-size: min(13vw, 9vh);
+        padding: .04em .18em .08em;
+        transition: none;
       }
 
       .lnk[data-id="portfolio"] a {
-        font-size: clamp(22px, 7.5vw, 34px);
+        font-size: min(11vw, 7.5vh);
       }
 
       .badge {

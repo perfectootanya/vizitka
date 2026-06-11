@@ -163,7 +163,7 @@
     .f-post .p-stats { margin-top: 8px; font-size: 11px; opacity: .42; display: flex; gap: 12px; }
 
     /* ══ MOBILE ═══════════════════════════════════════════════════ */
-    @media (max-width: 700px) {
+    @media (max-width: 1024px) {
 
       /* Big text: large, wrap allowed so "I'M TANYA" breaks to two lines */
       .big-text {
@@ -172,9 +172,9 @@
         line-height: 0.88;
       }
 
-      /* Links: big tap targets, positive gap, no overlap */
+      /* Links: no overlap */
       .lnk {
-        margin-bottom: 7px;
+        margin-bottom: 0;
       }
       .lnk:last-child { margin-bottom: 0; }
 
@@ -186,10 +186,6 @@
       .lnk:nth-child(5),
       .lnk:nth-child(6),
       .lnk:nth-child(7) { z-index: 1; }
-
-      .lnk {
-        margin-bottom: -2em;
-      }
 
       .lnk a {
         font-size: min(13vw, 9vh);
@@ -216,9 +212,9 @@
 
       .lnk[data-id="strava"]    { animation: sway 3.2s ease-in-out infinite 0s;    }
       .lnk[data-id="tg"]        { animation: sway 2.9s ease-in-out infinite -.7s;  }
-      .lnk[data-id="spotify"]   { animation: sway 3.3s ease-in-out infinite -1.1s; }
       .lnk[data-id="threads"]   { animation: sway 3.5s ease-in-out infinite -1.4s; }
       .lnk[data-id="insta"]     { animation: sway 3.1s ease-in-out infinite -2.0s; }
+      .lnk[data-id="spotify"]   { animation: sway 3.3s ease-in-out infinite -1.1s; }
       .lnk[data-id="contact"]   { animation: sway 2.8s ease-in-out infinite -.3s;  }
       .lnk[data-id="portfolio"] { animation: sway 3.4s ease-in-out infinite -1.8s; }
     }
@@ -263,7 +259,7 @@
 
   <script>
   (() => {
-    const isMobile = window.matchMedia('(max-width: 700px)').matches
+    const isMobile = window.matchMedia('(max-width: 1024px)').matches
                   || window.matchMedia('(hover: none)').matches;
 
     // ── Badge fall → return (works on both desktop + mobile) ──

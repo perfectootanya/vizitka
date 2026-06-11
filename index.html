@@ -18,22 +18,31 @@
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      overflow: hidden;
+      overflow-x: clip;
+      overflow-y: hidden;
       user-select: none;
       -webkit-user-select: none;
     }
 
-    /* ── Big titles (desktop) ── */
+    /* ── Big titles ── */
     .big-text {
       font-family: 'Gasoek One', sans-serif;
-      font-size: min(26vw, 18vh);   /* fits both titles on one screen */
-      line-height: 0.84;
+      font-size: min(26vw, 17vh);
+      line-height: 0.82;
       color: #000;
       text-align: center;
-      white-space: nowrap;          /* single line, bleeds off sides */
+      white-space: normal;
       pointer-events: none;
       letter-spacing: -0.01em;
       flex-shrink: 0;
+      width: 100%;
+    }
+
+    .big-text:first-child {
+      margin-top: -0.06em;   /* push HELLO into top edge */
+    }
+    .big-text:last-of-type {
+      margin-bottom: -0.06em; /* push I'M TANYA into bottom edge */
     }
 
     /* ── Links area ── */
@@ -165,16 +174,15 @@
     /* ══ MOBILE ═══════════════════════════════════════════════════ */
     @media (max-width: 1024px) {
 
-      /* Big text: large, wrap allowed so "I'M TANYA" breaks to two lines */
+      /* Big text: full-width on mobile */
       .big-text {
         font-size: 26vw;
-        white-space: normal;
         line-height: 0.88;
       }
 
-      /* Links: no overlap */
+      /* Links: spacing for tap targets */
       .lnk {
-        margin-bottom: 0;
+        margin-bottom: 0.18em;
       }
       .lnk:last-child { margin-bottom: 0; }
 
